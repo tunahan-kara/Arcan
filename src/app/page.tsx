@@ -1,103 +1,113 @@
-import Image from "next/image";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Section from "./components/Section";
 
-export default function Home() {
+export default function Page() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <>
+      <Header />
+      <main className="pt-14">
+        {/* HERO */}
+        <section className="h-[80vh] grid place-items-center bg-neutral-100">
+          <div className="text-center px-4">
+            <h1 className="text-4xl md:text-6xl font-semibold tracking-tight">
+              Fotoğrafını Alüminyum Kalitede Ölümsüzleştir
+            </h1>
+            <p className="mt-4 text-neutral-600">
+              Görselini yükle, boyutunu seç, biz üretip kargolayalım.
+            </p>
+            <a href="#product" className="inline-flex mt-6 px-5 py-3 rounded-lg bg-black text-white">
+              Görselini Yükle
+            </a>
+          </div>
+        </section>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+        {/* NASIL ÇALIŞIR */}
+        <section id="top" className="h-[80vh] grid place-items-center bg-neutral-100">
+  <div className="text-center px-4">
+    <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-neutral-900">
+      Fotoğrafını Alüminyumda Ölümsüzleştir
+    </h1>
+    <p className="mt-6 text-lg text-neutral-600 max-w-2xl mx-auto">
+      Görselini yükle, boyutunu seç, biz üretelim ve kapına gelsin.
+    </p>
+    <a
+      href="#product"
+      className="inline-flex mt-8 px-6 py-3 rounded-xl bg-black text-white font-medium shadow hover:bg-neutral-800 transition"
+    >
+      Görselini Yükle
+    </a>
+  </div>
+</section>
+
+
+
+        {/* ÖRNEKLER */}
+        <Section className="bg-neutral-50" >
+          <div id="gallery" className="mx-auto max-w-6xl px-4">
+            <h2 className="text-3xl md:text-4xl font-semibold mb-8">Örnek Baskılar</h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="aspect-[4/5] bg-neutral-200 rounded-lg" />
+              <div className="aspect-[4/5] bg-neutral-200 rounded-lg" />
+              <div className="aspect-[4/5] bg-neutral-200 rounded-lg" />
+              <div className="aspect-[4/5] bg-neutral-200 rounded-lg" />
+              <div className="aspect-[4/5] bg-neutral-200 rounded-lg" />
+              <div className="aspect-[4/5] bg-neutral-200 rounded-lg" />
+            </div>
+          </div>
+        </Section>
+
+        {/* ÜRÜN */}
+        <Section className="bg-white">
+          <div id="product" className="mx-auto max-w-6xl px-4">
+            <h2 className="text-3xl md:text-4xl font-semibold mb-8">Alüminyum Baskı</h2>
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="aspect-video rounded-lg bg-neutral-100 flex items-center justify-center">
+                <span className="text-neutral-500 text-sm">[ Görsel Yükleme Alanı (gelecek) ]</span>
+              </div>
+              <div className="space-y-4">
+                <p className="text-sm text-neutral-600">Tek ürün, 4 boyut seçeneği.</p>
+                <div className="flex gap-2">
+                  {["A4","A3","A2","A1"].map(s => (
+                    <button key={s} className="px-3 py-2 border rounded-lg text-sm">{s}</button>
+                  ))}
+                </div>
+                <div className="text-2xl font-semibold">₺400</div>
+                <button className="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-black text-white">
+                  Satın Al
+                </button>
+                <div className="text-xs text-neutral-500">
+                  * Satın almadan önce KVKK &amp; telif onayı alınacaktır.
+                </div>
+              </div>
+            </div>
+          </div>
+        </Section>
+
+        {/* SSS */}
+        <Section className="bg-neutral-50">
+          <div id="faq" className="mx-auto max-w-6xl px-4">
+            <h2 className="text-3xl md:text-4xl font-semibold mb-8">Sık Sorulan Sorular</h2>
+            <ul className="space-y-4 text-sm">
+              <li><strong>Format?</strong> JPG/PNG (PDF opsiyonel)</li>
+              <li><strong>Teslim?</strong> X–Y iş günü</li>
+              <li><strong>İade?</strong> Kişiye özel ürünlerde üretim hatası dışında iade yoktur.</li>
+            </ul>
+          </div>
+        </Section>
+
+        {/* İLETİŞİM */}
+        <Section className="bg-white">
+          <div id="contact" className="mx-auto max-w-6xl px-4">
+            <h2 className="text-3xl md:text-4xl font-semibold mb-6">İletişim</h2>
+            <div className="flex flex-col md:flex-row gap-6 text-sm">
+              <a className="px-4 py-2 rounded-lg border inline-flex w-fit" href="https://wa.me/90XXXXXXXXXX" target="_blank">WhatsApp’tan Yaz</a>
+              <a className="px-4 py-2 rounded-lg border inline-flex w-fit" href="mailto:info@ornek.com">info@ornek.com</a>
+            </div>
+          </div>
+        </Section>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      <Footer />
+    </>
   );
 }
