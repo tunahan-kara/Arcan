@@ -3,11 +3,13 @@ import Footer from "./components/Footer";
 import Section from "./components/Section";
 import HowItWorks from "./components/HowItWorks";
 import Gallery from "./components/Gallery";
+import Product from "./components/Product";
 
 export default function Page() {
   return (
     <>
       <Header />
+
       <main className="pt-16">
         {/* HERO */}
         <section id="top" className="h-[80vh] grid place-items-center bg-neutral-100">
@@ -34,33 +36,7 @@ export default function Page() {
         <Gallery />
 
         {/* ÜRÜN */}
-        <Section className="bg-white">
-          <div id="product" className="mx-auto max-w-6xl px-4 scroll-mt-24">
-            <h2 className="text-3xl md:text-4xl font-semibold mb-8">Alüminyum Baskı</h2>
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="aspect-video rounded-lg bg-neutral-100 flex items-center justify-center">
-                <span className="text-neutral-500 text-sm">[ Görsel Yükleme Alanı (gelecek) ]</span>
-              </div>
-              <div className="space-y-4">
-                <p className="text-sm text-neutral-600">Tek ürün, 4 boyut seçeneği.</p>
-                <div className="flex gap-2">
-                  {["A4", "A3", "A2", "A1"].map((s) => (
-                    <button key={s} className="px-3 py-2 border rounded-lg text-sm">
-                      {s}
-                    </button>
-                  ))}
-                </div>
-                <div className="text-2xl font-semibold">₺400</div>
-                <button className="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-black text-white">
-                  Satın Al
-                </button>
-                <div className="text-xs text-neutral-500">
-                  * Satın almadan önce KVKK &amp; telif onayı alınacaktır.
-                </div>
-              </div>
-            </div>
-          </div>
-        </Section>
+        <Product />
 
         {/* SSS */}
         <Section className="bg-neutral-50">
@@ -68,7 +44,7 @@ export default function Page() {
             <h2 className="text-3xl md:text-4xl font-semibold mb-8">Sık Sorulan Sorular</h2>
             <ul className="space-y-4 text-sm">
               <li>
-                <strong>Format?</strong> png/PNG (PDF opsiyonel)
+                <strong>Format?</strong> JPG/PNG (PDF opsiyonel)
               </li>
               <li>
                 <strong>Teslim?</strong> X–Y iş günü
@@ -99,6 +75,7 @@ export default function Page() {
           </div>
         </Section>
       </main>
+
       <Footer />
     </>
   );
