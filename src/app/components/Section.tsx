@@ -2,9 +2,15 @@
 import { motion } from "framer-motion";
 import { PropsWithChildren } from "react";
 
-export default function Section({ children, className = "" }: PropsWithChildren<{ className?: string }>) {
+interface SectionProps {
+  id?: string;
+  className?: string;
+}
+
+export default function Section({ id, className = "", children }: PropsWithChildren<SectionProps>) {
   return (
     <motion.section
+      id={id}
       className={`py-20 md:py-28 ${className}`}
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
