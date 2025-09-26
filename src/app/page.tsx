@@ -1,9 +1,9 @@
+import Link from "next/link";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Section from "./components/Section";
 import HowItWorks from "./components/HowItWorks";
 import Gallery from "./components/Gallery";
-import Product from "./components/Product";
 
 export default function Page() {
   return (
@@ -20,12 +20,14 @@ export default function Page() {
             <p className="mt-6 text-lg text-neutral-600 max-w-2xl mx-auto">
               Görselini yükle, boyutunu seç, biz üretelim ve kapına gelsin.
             </p>
-            <a
-              href="#product"
+
+            {/* CTA: /order sayfasına gider */}
+            <Link
+              href="/order"
               className="inline-flex mt-8 px-6 py-3 rounded-xl bg-black text-white font-medium shadow hover:bg-neutral-800 transition focus:outline-none focus:ring-2 focus:ring-black/30"
             >
               Görselini Yükle
-            </a>
+            </Link>
           </div>
         </section>
 
@@ -34,9 +36,6 @@ export default function Page() {
 
         {/* ÖRNEK BASKILAR */}
         <Gallery />
-
-        {/* ÜRÜN */}
-        <Product />
 
         {/* SSS */}
         <Section className="bg-neutral-50">
