@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+🖼️ Aluminum Print Web Application
 
-## Getting Started
+This project is a Next.js + TailwindCSS-based prototype e-commerce website that allows users to upload their own photos, select print sizes, and order custom aluminum wall prints.
 
-First, run the development server:
+🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Hero Slideshow
+Smooth background slideshow with dual-layer blur and sharp image transition effect.
+Product Section
+Upload image (JPG/PNG, max 25 MB)
+Size options (A1 – A4)
+Portrait/Landscape orientation toggle
+Fit / Crop & Fill preview modes
+Dynamic price and resolution validation
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Shopping Cart
+Add items, adjust quantity, remove or clear cart.
+(Payment integration planned for Milestone 8.)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+FAQ & Contact Sections
+Includes template content for Privacy / KVKK / Return policies, plus WhatsApp and email links.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Showcase Gallery
+Responsive image grid with hover zoom and lightbox preview animation.
 
-## Learn More
+Responsive Design
+Minimal and corporate layout optimized for all devices.
 
-To learn more about Next.js, take a look at the following resources:
+⚙️ Tech Stack
+Layer	Technology
+Framework	Next.js 14 (App Router)
+Styling	Tailwind CSS + Framer Motion
+State Management	Zustand (store for cart)
+Image Handling	next/image, lazy loading, WebP support
+Deployment (planned)	Vercel / Custom Domain + SSL
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+🧩 Directory Structure
+/app
+ ├─ components/
+ │   ├─ Header.tsx
+ │   ├─ Hero.tsx
+ │   ├─ Gallery.tsx
+ │   ├─ HowItWorks.tsx
+ │   ├─ Product.tsx
+ │   └─ Section.tsx
+ ├─ order/
+ │   └─ page.tsx
+ ├─ cart/
+ │   └─ page.tsx
+ ├─ store/
+ │   └─ cart.ts
+ ├─ globals.css
+ └─ page.tsx
+/public
+ ├─ gallery/...
+ └─ hero/...
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+🧠 Future Plans
 
-## Deploy on Vercel
+🛒 Payment integration (Iyzico / Shopier / Stripe)
+🖼️ Frame overlay visuals for A1 – A4 previews
+⚙️ Admin dashboard for order tracking
+🌐 Custom domain + SSL deployment
+📱 PWA version for mobile devices
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+👤 Developer
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Tunahan Kara
+www.linkedin.com/in/tunahankaraaa
+🎓 Computer Engineering Student @ Sivas Cumhuriyet University
