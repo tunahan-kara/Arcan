@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import Section from "./Section";
 import UploadBox from "./UploadBox";
+import { useCart } from "../store/cart";
 
 type SizeKey = "A4" | "A3" | "A2" | "A1";
 type Orientation = "portrait" | "landscape";
@@ -16,11 +17,7 @@ const SIZES: Array<{ key: SizeKey; label: string; cm: [number, number] }> = [
 ];
 
 const PRICE: Record<SizeKey, number> = { A4: 400, A3: 400, A2: 400, A1: 400 };
-
-// göreceli preview ölçeği
 const PREVIEW_SCALE: Record<SizeKey, number> = { A4: 0.78, A3: 0.86, A2: 0.93, A1: 1.0 };
-
-// Baskı için minimum DPI eşiği (200–300 yaygın; 200 daha esnek)
 const MIN_DPI = 200;
 
 export default function Product() {
@@ -33,24 +30,24 @@ export default function Product() {
 
   const price = selected ? PRICE[selected] : 400;
 
-  // Hedef cm (yönü uygula)
   const targetCm = useMemo(() => {
     if (!selected) return null;
-    const [w, h] = SIZES.find(s => s.key === selected)!.cm;
+    const [w, h] = SIZES.find((s) => s.key === selected)!.cm;
     return orientation === "portrait" ? { w, h } : { w: h, h: w };
   }, [selected, orientation]);
 
-  // Önizleme oranı
   const aspectRatio = useMemo(() => {
     const ratioPortrait = 210 / 297; // ≈0.707
     return orientation === "portrait" ? ratioPortrait : 1 / ratioPortrait;
   }, [orientation]);
 
-  // Önizleme göreceli genişlik
   const previewScale = useMemo(() => (selected ? PREVIEW_SCALE[selected] : 0.86), [selected]);
 
-  // Çözünürlük yeterli mi? (piksel >= cm * DPI / 2.54)
-  const resolutionWarning = useMemo(() => {
+  const resolutionWarning = useMemo<{
+    ok: boolean;
+    reqW: number;
+    reqH: number;
+  } | null>(() => {
     if (!imgMeta || !targetCm) return null;
     const reqW = Math.round((targetCm.w / 2.54) * MIN_DPI);
     const reqH = Math.round((targetCm.h / 2.54) * MIN_DPI);
@@ -58,7 +55,31 @@ export default function Product() {
     return { ok, reqW, reqH };
   }, [imgMeta, targetCm]);
 
-  const canBuy = Boolean(selected && file && consent && (resolutionWarning?.ok ?? true));
+  // Çerçeve dosyaları yoksa da sorun değil; prop vermiyoruz.
+  const frameSrc = useMemo<string | null>(() => {
+    if (!selected) return null;
+    const dir = orientation === "portrait" ? "portrait" : "landscape";
+    return `/frames/${selected}-${dir}.png`;
+  }, [selected, orientation]);
+
+  const canAdd = Boolean(selected); // sepete eklemek için minimum şart: boyut seçili
+
+  // Sepete ekle
+  const addToCart = () => {
+    if (!selected) return;
+    const previewUrl = file ? URL.createObjectURL(file) : null;
+
+    useCart.getState().addItem({
+      size: selected,
+      orientation,
+      fitMode,
+      price,
+      previewUrl,
+      filename: file?.name ?? null,
+    });
+
+    alert("Ürün sepete eklendi!");
+  };
 
   return (
     <Section id="product" className="bg-white scroll-mt-24">
@@ -78,6 +99,7 @@ export default function Product() {
               fitMode={fitMode}
               onFitModeChange={setFitMode}
               onImageInfo={setImgMeta}
+              // frameSrc={frameSrc ?? undefined} // çerçeveleri sonra ekleyeceğiz
             />
 
             {/* Yön (toggle) */}
@@ -103,10 +125,10 @@ export default function Product() {
             </p>
 
             {/* Çözünürlük uyarısı */}
-            {imgMeta && targetCm && (
-              <div className={`mt-2 text-xs ${resolutionWarning?.ok ? "text-green-700" : "text-red-600"}`}>
-                Yüklenen görsel: {imgMeta.width}×{imgMeta.height} px — Hedef {targetCm.w}×{targetCm.h} cm için önerilen min. {Math.round((targetCm.w / 2.54) * MIN_DPI)}×{Math.round((targetCm.h / 2.54) * MIN_DPI)} px
-                {!resolutionWarning?.ok && (
+            {imgMeta && targetCm && resolutionWarning && (
+              <div className={`mt-2 text-xs ${resolutionWarning.ok ? "text-green-700" : "text-red-600"}`}>
+                Yüklenen görsel: {imgMeta.width}×{imgMeta.height} px — Hedef {targetCm.w}×{targetCm.h} cm için önerilen min. {resolutionWarning.reqW}×{resolutionWarning.reqH} px
+                {!resolutionWarning.ok && (
                   <span className="block">
                     • Görsel bu boyut için düşük çözünürlükte. Daha küçük bir boyut seçebilir veya farklı görsel yükleyebilirsin.
                   </span>
@@ -159,27 +181,29 @@ export default function Product() {
             {/* Onay kutusu */}
             <div className="space-y-2 text-xs text-neutral-700">
               <label className="flex items-start gap-2">
-                <input type="checkbox" className="mt-0.5" checked={consent} onChange={(e) => setConsent(e.target.checked)} />
-                <span>KVKK ve telif beyanını okudum, onaylıyorum. <em className="text-neutral-500">(Metinler Gün 9’da eklenecek)</em></span>
+                <input
+                  type="checkbox"
+                  className="mt-0.5"
+                  checked={consent}
+                  onChange={(e) => setConsent(e.target.checked)}
+                />
+                <span>
+                  KVKK ve telif beyanını okudum, onaylıyorum. <em className="text-neutral-500">(Metinler Gün 9’da eklenecek)</em>
+                </span>
               </label>
             </div>
 
-            {/* Satın Al */}
+            {/* Sepete Ekle */}
             <button
               type="button"
-              disabled={!canBuy}
+              disabled={!canAdd}
               className={[
                 "inline-flex items-center justify-center px-4 py-2 rounded-lg text-white transition",
-                canBuy ? "bg-black hover:bg-neutral-800" : "bg-neutral-400 cursor-not-allowed",
+                canAdd ? "bg-black hover:bg-neutral-800" : "bg-neutral-400 cursor-not-allowed",
               ].join(" ")}
-              onClick={() => {
-                if (!canBuy) return;
-                alert(
-                  `Seçilen: ${selected} (${orientation})\nFit: ${fitMode}\nFiyat: ₺${price}\nDosya: ${file?.name}\n\n(Ödeme entegrasyonu Gün 8’de eklenecek.)`
-                );
-              }}
+              onClick={addToCart}
             >
-              Satın Al
+              Sepete Ekle
             </button>
 
             <p className="text-[11px] leading-relaxed text-neutral-500">

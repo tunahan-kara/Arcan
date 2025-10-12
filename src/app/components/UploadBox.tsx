@@ -14,6 +14,8 @@ type Props = {
   fitMode?: FitMode;            // sığdır (contain) / kırp-doldur (cover)
   onFitModeChange?: (m: FitMode) => void;
   onImageInfo?: (info: { width: number; height: number }) => void; // doğal piksel
+  frameSrc?: string;            // üst katmana bindirilecek şeffaf ortalı PNG
+  wallSrc?: string;             // arka plan (opsiyonel)
 };
 
 export default function UploadBox({
@@ -26,10 +28,10 @@ export default function UploadBox({
   fitMode = "contain",
   onFitModeChange,
   onImageInfo,
+  frameSrc,
+  wallSrc,
 }: Props) {
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const imgRef = useRef<HTMLImageElement | null>(null);
-
   const [dragOver, setDragOver] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -77,7 +79,7 @@ export default function UploadBox({
     return () => URL.revokeObjectURL(url);
   }, [value]);
 
-  // Doğal piksel bilgisini yükle
+  // Doğal piksel bilgisini bildir
   useEffect(() => {
     if (!preview || !onImageInfo) return;
     const img = new Image();
@@ -143,13 +145,17 @@ export default function UploadBox({
           </>
         ) : (
           <div className="space-y-3">
-            {/* Önizleme çerçevesi: oran + göreceli genişlik */}
+            {/* Önizleme sahnesi: duvar + kullanıcı görseli + çerçeve */}
             <div
-              className="mx-auto rounded-lg bg-white shadow border border-neutral-200 overflow-hidden select-none"
+              className="relative mx-auto rounded-lg shadow border border-neutral-200 overflow-hidden select-none"
               style={{
                 aspectRatio,
                 width: `${Math.round(520 * previewScale)}px`,
                 maxWidth: "100%",
+                backgroundColor: "#eee",
+                backgroundImage: wallSrc ? `url(${wallSrc})` : undefined,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
                 cursor: fitMode === "cover" ? (dragging ? "grabbing" : "grab") : "default",
                 touchAction: "none",
               }}
@@ -158,24 +164,45 @@ export default function UploadBox({
               onPointerUp={onPointerUp}
               onPointerCancel={onPointerUp}
             >
+              {/* Kullanıcı görseli */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                ref={imgRef}
                 src={preview}
                 alt="Önizleme"
-                className="h-full w-full object-contain transition-transform duration-300"
+                className="absolute inset-0 h-full w-full object-contain transition-transform duration-300"
                 style={{
                   transform: `translate(${offset.x}px, ${offset.y}px) rotate(${rotate90 ? 90 : 0}deg) scale(${zoom})`,
                   objectFit: fitMode === "contain" ? "contain" : "cover",
+                  zIndex: 1,
                 }}
               />
+
+              {/* Çerçeve overlay */}
+              {frameSrc && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={frameSrc}
+                  alt="Çerçeve"
+                  className="absolute inset-0 h-full w-full pointer-events-none select-none"
+                  style={{ zIndex: 2 }}
+                />
+              )}
             </div>
 
+            {/* Kontroller */}
             <div className="flex flex-wrap items-center justify-center gap-3">
-              <button type="button" className="px-3 py-1.5 rounded-lg border bg-white hover:bg-neutral-50 transition text-sm" onClick={() => inputRef.current?.click()}>
+              <button
+                type="button"
+                className="px-3 py-1.5 rounded-lg border bg-white hover:bg-neutral-50 transition text-sm"
+                onClick={() => inputRef.current?.click()}
+              >
                 Değiştir
               </button>
-              <button type="button" className="px-3 py-1.5 rounded-lg border border-red-300 bg-red-50 text-red-600 hover:bg-red-100 transition text-sm" onClick={() => onChange(null)}>
+              <button
+                type="button"
+                className="px-3 py-1.5 rounded-lg border border-red-300 bg-red-50 text-red-600 hover:bg-red-100 transition text-sm"
+                onClick={() => onChange(null)}
+              >
                 Kaldır
               </button>
 
@@ -206,7 +233,7 @@ export default function UploadBox({
                   max={3}
                   step={0.01}
                   value={zoom}
-                  onChange={(e) => setZoom(parseFloat(e.target.value))}
+                  onChange={(e) => setZoom(parseFloat((e.target as HTMLInputElement).value))}
                 />
                 <button
                   type="button"
