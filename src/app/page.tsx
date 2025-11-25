@@ -30,7 +30,7 @@ export default function Page() {
               <li><strong>Kargo ücreti dahil mi?</strong> 500 TL üzeri siparişlerde ücretsizdir, altında standart kargo ücreti uygulanır.</li>
               <li><strong>İade mümkün mü?</strong> Kişiye özel baskı ürünlerinde üretim hatası dışında iade yapılamaz.</li>
               <li><strong>Fotoğrafım yeterince kaliteli mi?</strong> Sistem düşük çözünürlükte uyarı verir. Net olmayan fotoğraflar baskıda bulanık görünebilir.</li>
-              <li><strong>Ödemeyi nasıl yapabilirim?</strong> Kredi kartı veya havale/EFT ile ödeme yapabilirsiniz. (Ödeme entegrasyonu Gün 8’de eklenecek)</li>
+              <li><strong>Ödemeyi nasıl yapabilirim?</strong> Kredi kartı veya havale/EFT ile ödeme yapabilirsiniz. </li>
             </ul>
           </div>
         </Section>
@@ -46,7 +46,7 @@ export default function Page() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                💬 WhatsApp’tan Yaz
+                💬 Mehmet Emre Yılmaz,Onur Altınparmak
               </a>
               <a
                 className="px-4 py-2 rounded-lg border inline-flex w-fit items-center gap-2 hover:bg-neutral-50 transition"
